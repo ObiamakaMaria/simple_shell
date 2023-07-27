@@ -42,35 +42,6 @@ void shell_with_path(char **argg, char *path, char *fnm)
 
 
 /**
- * simple_shell - function that implement fork and excve for commands
- * @argg: the arrays of commands and arguments
- * @path: the absolute path of a short command
- * @fnm: the  name of the executable file for the shell
- * return: void
- */
-void simple_shell(char **argg, char *path, char *fnm)
-{
-	if (is_file_exists(path) || !is_executable(path))
-	{
-		perror(path);
-		free(path);
-		free_func(argg);
-		exit(1);
-	}
-	else if (is_executable(path))
-	{
-
-		if (execve(path, argg, environ) == -1)
-		{
-			free(path);
-			free_func(argg);
-			perror(fnm);
-			exit(1);
-		}
-	}
-}
-
-/**
  * execute_command - function that call simple_shell or shell_with_path
  * @tkn: pointer to an array of strings for file execution
  * @command: the comand to execute
@@ -78,11 +49,8 @@ void simple_shell(char **argg, char *path, char *fnm)
  * @det: it is the determinant whether to call fork or not
  * return: void
  */
-void execute_command(char **tkn, char *command, char *fnm, char *det)
+void execute_command(char **tkn, char *command, char *fnm)
 {
-	if (strcmp(det, "nofork") == 0)
-		simple_shell(tkn, command, fnm);
-	else if (strcmp(det, "fork") == 0)
 		shell_with_path(tkn, command, fnm);
 }
 /**

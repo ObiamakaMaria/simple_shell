@@ -27,18 +27,16 @@
 #define O_RDONLY 0
 #endif
 /*temporary execute func */
-void execute_command(char **tkn, char *command, char *fnm, char *det);
+void execute_command(char **tkn, char *command, char *fnm);
 void _check(char *command, char *fnm);
 
 
 void handle_sigint(int signum);
 void count_quotes(char *str);
-void handle_pipe(char *input, char *fnm);
 extern char **environ;
 extern char **dup_environ;
 extern char *buf;
 int is_file_exists(const char *filename);
-void simple_shell(char **argg, char *path, char *fnm);
 /* function that free arays */
 void free_func(char **token);
 
@@ -54,7 +52,6 @@ int _strncmp(const char *str1, const char *str2, size_t num);
 int _strcspn(const char *str1, const char *str2);
 void *_memcpy(void *dest, const void *src, size_t n);
 int _white(const char *str);
-int _contains_pipe(const char *input);
 int _strcmp(const char *s1, char *s2);
 char *_strtok(char *str, const char *delimiter);
 char *_strchr(const char *s, char c);

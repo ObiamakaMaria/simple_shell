@@ -81,16 +81,3 @@ int _white(const char *str)
 	}
 	return (1);
 }
-
-/**
- * _contains_pipe - a function that checks for pipe character
- * @input: the input the check
- * Return: return true if found
- */
-
-int _contains_pipe(const char *input)
-{
-	if (_strchr(input, '|') != NULL)
-		return (1);
-	return (0);
-}
