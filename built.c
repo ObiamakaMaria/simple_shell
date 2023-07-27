@@ -38,7 +38,6 @@ void builtins(char *command, char *fnm)
 			}
 			else
 			{
-				printf("%ld\n", status);
 				free(command);
 				exit((int)status);
 			}
