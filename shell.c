@@ -46,7 +46,6 @@ void shell_with_path(char **argg, char *path, char *fnm)
  * @tkn: pointer to an array of strings for file execution
  * @command: the comand to execute
  * @fnm: the shell executable name
- * @det: it is the determinant whether to call fork or not
  * return: void
  */
 void execute_command(char **tkn, char *command, char *fnm)
