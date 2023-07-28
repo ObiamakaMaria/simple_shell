@@ -55,6 +55,9 @@ int _white(const char *str);
 int _strcmp(const char *s1, char *s2);
 char *_strtok(char *str, const char *delimiter);
 char *_strchr(const char *s, char c);
+void int_to_string(int num, char *buffer);
+int get_int_length(int num);
+int write_error_message(const char *fnm, int mm, const char *path);
 
 /*custom getline function */
 

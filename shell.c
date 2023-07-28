@@ -12,10 +12,17 @@ void shell_with_path(char **argg, char *path, char *fnm)
 {
 	pid_t pid;
 	int status;
+	static int mm = 1;
 
 	if (is_file_exists(path) || !is_executable(path))
 	{
-		perror(fnm);
+		if (write_error_message(fnm, mm, path) == -1)
+		{
+			free(path);
+			free_func(argg);
+			exit(0);
+		}
+		mm++;
 	}
 	else if (is_executable(path))
 	{
