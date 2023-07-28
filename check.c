@@ -12,7 +12,7 @@ void _check(char *command, char *fnm)
 	char *path = NULL;
 	int tell = 0;
 
-	/*count_quotes(command);*/
+	count_quotes(command);
 	if (_strncmp(command, "exit", 4) == 0)
 	{
 		tell = 1;
