@@ -94,3 +94,48 @@ int write_error_message(const char *fnm, int mm, const char *path)
 	free(error_string);
 	return (1);
 }
+/**
+ * separator_error - function that writes erroe to stderr
+ * @fnm: the name of the executable file
+ * @mm: the number of time a user enter wrong or error command
+ * @path: the pointer to the user command
+ * Return: -1 on failure, 1 on success
+ */
+int separator_error(const char *fnm, int mm, const char *path)
+{
+	const char *err_1 = "Syntax error: ";
+	const char *err_2 = " unexpected\n";
+	char mm_s[10];
+	char *error_string = NULL;
+	int f_len = _strlen(fnm);
+	int mm_len, p_len, err_1_l, err_2_l;
+	int total_length, index = 0, i;
+
+	int_to_string(mm, mm_s);
+	mm_len = _strlen(mm_s);
+	p_len = _strlen(path);
+	err_1_l = _strlen(err_1);
+	err_2_l = _strlen(err_2);
+	total_length = f_len + mm_len + p_len + err_1_l + err_2_l + 4;
+	error_string = (char *)malloc(total_length + 1);
+	if (!error_string)
+		return (-1);
+	for (i = 0; i < f_len; i++)
+		error_string[index++] = fnm[i];
+	error_string[index++] = ':';
+	error_string[index++] = ' ';
+	for (i = 0; i < mm_len; i++)
+		error_string[index++] = mm_s[i];
+	error_string[index++] = ':';
+	error_string[index++] = ' ';
+	for (i = 0; i < err_1_l; i++)
+		error_string[index++] = err_1[i];
+	for (i = 0; i < p_len; i++)
+		error_string[index++] = path[i];
+	for (i = 0; i < err_2_l; i++)
+		error_string[index++] = err_2[i];
+	error_string[index] = '\0';
+	write(2, error_string, total_length);
+	free(error_string);
+	return (1);
+}

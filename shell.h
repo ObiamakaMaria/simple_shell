@@ -61,7 +61,10 @@ void int_to_string(int num, char *buffer);
 int get_int_length(int num);
 int write_error_message(const char *fnm, int mm, const char *path);
 int _contains_pipe(const char *input);
-int contains_e(const char* str);
+int contains_e(const char *str);
+int has_c(const char *str, char s);
+char *remove_w(const char *str);
+int contains_m(const char *str);
 
 /*custom getline function */
 
@@ -80,11 +83,13 @@ char  *path_handler(char *command);
 char *get_env(const char *key);
 char *_strdup(const char *str);
 int is_executable(const char *path);
+int separator_error(const char *fnm, int mm, const char *path);
 
 /*env builtins */
 int _env(void);
 int _setenv(char **args, char *fnm);
 int _unsetenv(char **args);
 int shell_env(char *command, char *fnm);
-
+int shell_cd(char **args,char *fnm);
+void _separator(char *command, char *fnm);
 #endif

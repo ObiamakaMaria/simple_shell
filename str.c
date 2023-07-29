@@ -43,3 +43,28 @@ int _strcmp(const char *s1, char *s2)
 
 	return (0);
 }
+/**
+ * contains_m - function that check for multiple column
+ * @str: the string to check
+ * Return: 1 on truee and 0 on false
+ */
+int contains_m(const char *str)
+{
+	int count = 0;
+	int i;
+
+	if (str == NULL || str[0] == '\0')
+		return (0);
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] == ';')
+		{
+			count++;
+			if (count > 1)
+				return (1);
+		}
+	}
+
+	return (0);
+}
