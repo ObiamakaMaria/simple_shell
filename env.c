@@ -6,7 +6,7 @@
  * Return: If an error occurs - -1.
  *	   Otherwise - 0.
  */
-int _env()
+int _env(void)
 {
 	int index;
 	char nc = '\n';
@@ -24,61 +24,55 @@ int _env()
 
 /**
  * _setenv - Changes or adds an environmental variable to the PATH.
- * @args: An array of arguments passed to the shell.
+ * @args: An array of arguments passed to the shell
+ * @fnm: the executable file name
  * Return: If an error occurs - -1.
  *         Otherwise - 0.
  */
-int _setenv(char **args, char *fnm) {
+int _setenv(char **args, char *fnm)
+{
 	char *env_var = NULL, *new_value, **new_environ;
 	char *ptr;
 	size_t size;
 	int index;
 
-	if (!args[0] || !args[1]) {
+	if (!args[0] || !args[1] || !contains_e(args[1]))
+	{
 		_env();
 		return (-1);
 	}
-
 	new_value = malloc(_strlen(args[0]) + 1 + _strlen(args[1]) + 1);
 	if (!new_value)
 		return (-1);
-
 	ptr = new_value;
 	_strcpy(ptr, args[1]);
-
 	env_var = get_env(args[0]);
-	if (env_var) {
+	if (env_var)
+	{
 		_strcpy(env_var, new_value);
 		free(new_value);
 		return (0);
 	}
-
 	/* Find the size of the current environment */
 	for (size = 0; environ[size]; size++)
 		;
-
-	/* Create a new environment array with an additional slot for the new variable */
 	new_environ = malloc(sizeof(char *) * (size + 2));
-	if (!new_environ) {
+	if (!new_environ)
+	{
 		perror(fnm);
 		free(new_value);
 		return (-1);
 	}
-
-	/* Copy the existing environment variables to the new array */
 	for (index = 0; environ[index]; index++)
 		new_environ[index] = strdup(environ[index]);
-
-	/* Add the new environment variable to the end of the new array */
 	environ = new_environ;
 	environ[index] = new_value;
-	environ[index +1] = NULL;
-
+	environ[index + 1] = NULL;
 	return (0);
 }
 
 /**
- * shellby_unsetenv - Deletes an environmental variable from the PATH.
+ * _unsetenv - Deletes an environmental variable from the PATH.
  * @args: An array of arguments passed to the shell.
  * Return: zero on success else return -1
  */

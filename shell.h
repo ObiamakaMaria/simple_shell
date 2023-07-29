@@ -61,6 +61,7 @@ void int_to_string(int num, char *buffer);
 int get_int_length(int num);
 int write_error_message(const char *fnm, int mm, const char *path);
 int _contains_pipe(const char *input);
+int contains_e(const char* str);
 
 /*custom getline function */
 

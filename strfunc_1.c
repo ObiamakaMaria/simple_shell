@@ -77,7 +77,25 @@ int _white(const char *str)
 	{
 		if (*str != ' ' && *str != '\t')
 			return (0);
-	str++;
+		str++;
 	}
 	return (1);
 }
+/**
+ * contains_e - function that check for "="
+ * @str: the string to check
+ * Return: 1 on success 0 on not found
+ */
+
+int contains_e(const char *str)
+{
+	int i;
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] == '=')
+			return (1);
+	}
+	return (0);
+}
+
