@@ -47,6 +47,7 @@ void shell_with_path(char **argg, char *path, char *fnm)
 			do
 				waitpid(pid, &status, WUNTRACED);
 			while	(!WIFEXITED(status) && !WIFSIGNALED(status));
+		}
 
 	}
 }
