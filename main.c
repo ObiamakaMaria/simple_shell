@@ -18,11 +18,11 @@ int main(int argc, char **argv)
 	signal(SIGINT, handle_sigint);
 	while (ON)
 	{
-		write(STDOUT_FILENO, "$ ", 2);
+		write(STDIN_FILENO, "$ ", 2);
 		fflush(stdout);
 		if (_getline(&buf, &n, stdin) == -1)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			write(STDIN_FILENO, "\n", 1);
 			break;
 		}
 		buf[_strcspn(buf, "\n")] = '\0';
