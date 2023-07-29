@@ -21,7 +21,10 @@ int main(int argc, char **argv)
 		write(STDOUT_FILENO, "$ ", 2);
 		fflush(stdout);
 		if (_getline(&buf, &n, stdin) == -1)
+		{
+			write(STDOUT_FILENO, "\n", 1);
 			break;
+		}
 		buf[_strcspn(buf, "\n")] = '\0';
 		if (_strlen(buf) == 0)
 			continue;
