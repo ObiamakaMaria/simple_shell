@@ -39,7 +39,7 @@ void shell_with_path(char **argg, char *path, char *fnm)
 				free(path);
 				free_func(argg);
 				perror(fnm);
-				exit(1);
+				exit(2);
 			}
 		}
 		else
@@ -76,6 +76,7 @@ void simple_shell(char **argg, char *path, char *fnm)
 			free(path);
 			free_func(argg);
 			perror(fnm);
+			exit(2);
 		}
 	}
 }
