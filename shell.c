@@ -23,7 +23,6 @@ void shell_with_path(char **argg, char *path, char *fnm)
 			exit(0);
 		}
 		mm++;
-		exit(27);
 	}
 	else if (is_executable(path))
 	{
