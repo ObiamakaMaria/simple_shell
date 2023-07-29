@@ -20,7 +20,11 @@ void _check(char *command, char *fnm)
 			builtins(command, fnm);
 	}
 
-
+	if (_contains_pipe(command) == 1)
+	{
+		tell = 1;
+		handle_pipe(command, fnm);
+	}
 	if (tell == 0)
 	{
 		tkn = tokenie(command, " ");
@@ -28,11 +32,11 @@ void _check(char *command, char *fnm)
 		if (path == NULL)
 		{
 			path = _strdup(tkn[0]);
-			execute_command(tkn, path, fnm);
+			execute_command(tkn, path, fnm, "fork");
 		}
 
 		else
-			execute_command(tkn, path, fnm);
+			execute_command(tkn, path, fnm, "fork");
 		free(path);
 		free_func(tkn);
 	}

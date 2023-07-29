@@ -27,7 +27,7 @@
 #define O_RDONLY 0
 #endif
 /*temporary execute func */
-void execute_command(char **tkn, char *command, char *fnm);
+void execute_command(char **tkn, char *command, char *fnm, char *det);
 void _check(char *command, char *fnm);
 
 
@@ -37,6 +37,8 @@ extern char **environ;
 extern char **dup_environ;
 extern char *buf;
 int is_file_exists(const char *filename);
+void simple_shell(char **argg, char *path, char *fnm);
+void handle_pipe(char *input, char *fnm);
 /* function that free arays */
 void free_func(char **token);
 
@@ -58,6 +60,7 @@ char *_strchr(const char *s, char c);
 void int_to_string(int num, char *buffer);
 int get_int_length(int num);
 int write_error_message(const char *fnm, int mm, const char *path);
+int _contains_pipe(const char *input);
 
 /*custom getline function */
 
@@ -83,4 +86,3 @@ int _setenv(char **args, char *fnm);
 int _unsetenv(char **args);
 
 #endif
-
