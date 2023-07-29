@@ -89,9 +89,9 @@ int _unsetenv(char **args)
 	size_t size;
 	int index, index2;
 
-	if (!args[0])
+	if (!args[1])
 		return (-1);
-	env_var = get_env(args[0]);
+	env_var = get_env(args[1]);
 	if (!env_var)
 		return (0);
 
@@ -106,7 +106,6 @@ int _unsetenv(char **args)
 	{
 		if (env_var == environ[index])
 		{
-			free(env_var);
 			continue;
 		}
 		new_environ[index2] = environ[index];

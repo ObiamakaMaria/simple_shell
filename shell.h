@@ -84,5 +84,6 @@ int is_executable(const char *path);
 int _env(void);
 int _setenv(char **args, char *fnm);
 int _unsetenv(char **args);
+int shell_env(char *command, char *fnm);
 
 #endif

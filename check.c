@@ -19,16 +19,8 @@ void _check(char *command, char *fnm)
 		if (command[4] == ' ' || command[4] == '\0')
 			builtins(command, fnm);
 	}
-	if (_strncmp(command, "setenv", 6) == 0)
-	{
-		if(command[6] == ' ' || command[6] == '\0')
-		{
-			tell = 1;
-			tkn = tokenie(command, " ");
-			_setenv(tkn, fnm);
-			free_func(tkn);
-		}
-	}
+	if (shell_env(command, fnm) == 1)
+		tell = 1;
 
 	if (_contains_pipe(command) == 1)
 	{
@@ -51,4 +43,37 @@ void _check(char *command, char *fnm)
 		free_func(tkn);
 	}
 }
+int shell_env(char *command, char *fnm)
+{
+	char **tkn = NULL;
 
+	if (_strncmp(command, "setenv", 6) == 0)
+	{
+		if(command[6] == ' ' || command[6] == '\0')
+		{
+			tkn = tokenie(command, " ");
+			_setenv(tkn, fnm);
+			free_func(tkn);
+			return (1);
+		}
+	}
+	if (_strncmp(command, "unsetenv", 8) == 0)
+	{
+		if(command[8] == ' ' || command[8] == '\0')
+		{
+			tkn = tokenie(command, " ");
+			_unsetenv(tkn);
+			free_func(tkn);
+			return (1);
+		}
+	}
+	if (_strncmp(command, "env", 3) == 0)
+	{
+		if(command[3] == ' ' || command[3] == '\0')
+		{
+			_env();
+			return (1);
+		}
+	}
+	return (0);
+}
