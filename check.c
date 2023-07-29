@@ -99,8 +99,8 @@ void _separator(char *command, char *fnm)
 {
 	int i = 0, j = 0;
 	static int mm = 1;
-	char *ret = NULL, *patt = NULL;
-	char **tkn = NULL, **tkn_2 = NULL;
+	char *ret = NULL;
+	char **tkn = NULL;
 
 	if (has_c(command, ';') == 1)
 		j = 1;
@@ -132,21 +132,29 @@ void _separator(char *command, char *fnm)
 		{
 			while (tkn[i] != NULL)
 			{
-				tkn_2 = tokenie(tkn[i], " ");
+				_check(tkn[i], fnm);
+				/*tkn_2 = tokenie(tkn[i], " ");
 				patt = path_handler(tkn_2[0]);
 				if (patt == NULL)
 				{
 					patt = _strdup(tkn_2[0]);
 					execute_command(tkn_2, patt, fnm, "fork");
+					free(patt);
+					free_func(tkn_2);
 				}
 				if (patt != NULL)
+				{
 					execute_command(tkn_2, patt, fnm, "fork");
-				free_func(tkn);
+					free(patt);
+					free_func(tkn_2);
+				}*/
+
 				i++;
 			}
-		}
-	}
 
+		}
+		free_func(tkn);
+	}
 
 
 
