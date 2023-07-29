@@ -19,6 +19,16 @@ void _check(char *command, char *fnm)
 		if (command[4] == ' ' || command[4] == '\0')
 			builtins(command, fnm);
 	}
+	if (_strncmp(command, "setenv", 6) == 0)
+	{
+		if(command[6] == ' ' || command[6] == '\0')
+		{
+			tell = 1;
+			tkn = tokenie(command, " ");
+			_setenv(tkn, fnm);
+			free_func(tkn);
+		}
+	}
 
 	if (_contains_pipe(command) == 1)
 	{
