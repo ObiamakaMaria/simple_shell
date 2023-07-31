@@ -13,7 +13,7 @@ int has_c(const char *str, char s)
 
 	while (str[i] != '\0')
 	{
-		if (str[i] == s && str[i +1] == s)
+		if (str[i] == s && str[i + 1] == s)
 		{
 			ret = 1;
 		}
@@ -25,7 +25,7 @@ int has_c(const char *str, char s)
 
 /**
  * remove_w - function that remove white space
- * @str: the string to remove from 
+ * @str: the string to remove from
  * Return: NULL on failure the string without whitespace on success
  */
 char *remove_w(const char *str)
@@ -39,7 +39,7 @@ char *remove_w(const char *str)
 
 	tmp = strdup(str);
 	original_l = strlen(tmp);
-	tem = (char*) malloc(original_l + 1);
+	tem = (char *) malloc(original_l + 1);
 	if (tem == NULL)
 	{
 		free(tmp);

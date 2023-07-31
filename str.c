@@ -68,3 +68,34 @@ int contains_m(const char *str)
 
 	return (0);
 }
+/**
+ * logical_b - function that check for the first occurrence of character
+ * @c: the character to check
+ * @command: the string to check
+ * Return: the index of the first c
+ */
+int logical_b(const char *command, char c)
+{
+	int i = 0;
+	int found_c = 0;
+	int j;
+
+	while (command[i] != '\0')
+	{
+		if (command[i] == c)
+		{
+			j = i - 1;
+			while (j >= 0 && command[j] == ' ')
+				j--;
+			if (j < 0 && !found_c)
+				return (i);
+			else
+				return (-1);
+		}
+		else if (command[i] != ' ')
+			found_c = 1;
+		i++;
+	}
+
+	return (-1);
+}

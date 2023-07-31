@@ -28,7 +28,7 @@
 #endif
 /*temporary execute func */
 void execute_command(char **tkn, char *command, char *fnm, char *det);
-void _check(char *command, char *fnm);
+void _check(char *command, char *fnm, int *ptr);
 
 
 void handle_sigint(int signum);
@@ -65,6 +65,7 @@ int contains_e(const char *str);
 int has_c(const char *str, char s);
 char *remove_w(const char *str);
 int contains_m(const char *str);
+int logical_b(const char *command, char c);
 
 /*custom getline function */
 
@@ -84,12 +85,14 @@ char *get_env(const char *key);
 char *_strdup(const char *str);
 int is_executable(const char *path);
 int separator_error(const char *fnm, int mm, const char *path);
+void logical_and(char *command, char *fnm, int *ptr);
+void not_j(char *command, char *fnm, int *ptr);
 
 /*env builtins */
 int _env(void);
 int _setenv(char **args, char *fnm);
 int _unsetenv(char **args);
-int shell_env(char *command, char *fnm);
-int shell_cd(char **args,char *fnm);
-void _separator(char *command, char *fnm);
+int shell_env(char *command, char *fnm, int *ptr);
+int shell_cd(char **args, char *fnm);
+void _separator(char *command, char *fnm, int *ptr);
 #endif
