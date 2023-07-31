@@ -216,11 +216,6 @@ void not_j(char *command, char *fnm, int *ptr)
 					*ptr = 1;
 					break;
 				}
-				if (ret[len] == '&' && ret[len - 1] == '&')
-				{
-					*ptr = 1;
-					break;
-				}
 
 			}
 

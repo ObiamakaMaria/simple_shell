@@ -55,6 +55,7 @@ int _strcspn(const char *str1, const char *str2);
 void *_memcpy(void *dest, const void *src, size_t n);
 int _white(const char *str);
 int _strcmp(const char *s1, char *s2);
+int has_consecutive(const char *str, char c);
 char *_strtok(char *str, const char *delimiter);
 char *_strchr(const char *s, char c);
 void int_to_string(int num, char *buffer);
@@ -87,7 +88,8 @@ int is_executable(const char *path);
 int separator_error(const char *fnm, int mm, const char *path);
 void logical_and(char *command, char *fnm, int *ptr);
 void not_j(char *command, char *fnm, int *ptr);
-
+int buf_end(char *command);
+void run_buf_end(char *command, char *fnm, int *sta, int *state);
 /*env builtins */
 int _env(void);
 int _setenv(char **args, char *fnm);

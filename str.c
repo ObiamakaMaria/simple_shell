@@ -99,3 +99,27 @@ int logical_b(const char *command, char c)
 
 	return (-1);
 }
+/**
+ * has_consecutive - function that check for consecutive character 3x
+ * @str: the string to check
+ * @c: the character to check
+ * Return: 1 if found else zero
+ */
+int has_consecutive(const char *str, char c)
+{
+	int count = 1, i;
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] == c)
+		{
+			count++;
+			if (count == 3)
+				return (1);
+		}
+		else
+			count = 0;
+	}
+
+	return (0);
+}
