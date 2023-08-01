@@ -6,15 +6,16 @@
  * @argv: arrays of arguments and name of file
  * Return: 0 on succes
  */
-
 int main(int argc, char **argv)
 {
-	char *buf = NULL, *fnm = argv[0];
 	size_t n = 0;
 	int state = 0, sta = 0;
+	char *tmp = NULL;
+	concatenate_pair cp;
 
 	(void)argc;
-
+	cp.buf = NULL;
+	cp.fnm = argv[0];
 	signal(SIGINT, handle_sigint);
 	while (ON)
 	{
@@ -23,34 +24,41 @@ int main(int argc, char **argv)
 		if (state && sta)
 			write(STDIN_FILENO, "> ", 2);
 		fflush(stdout);
-		if (_getline(&buf, &n, stdin) == -1)
+		if (_getline(&cp.buf, &n, stdin) == -1)
 		{
 			write(STDIN_FILENO, "\n", 1);
 			break;
 		}
-		buf[_strcspn(buf, "\n")] = '\0';
-		if (_strlen(buf) == 0)
+		cp.buf[_strcspn(cp.buf, "\n")] = '\0';
+		if (_strlen(cp.buf) == 0)
 		{
 			if (!sta)
 			state = 0;
 			continue;
 		}
-		if (_white(buf) == 1)
+		if (_white(cp.buf) == 1)
 		{
 			if (!sta)
 			state = 0;
 			continue;
 		}
-		if (buf_end(buf))
-		run_buf_end(buf, fnm, &sta, &state);
+		if (tmp != NULL)
+		{
+			append_to_beginning(cp.buf, tmp);
+			free(tmp);
+			tmp = NULL;
+		}
+		if (buf_end(cp.buf))
+		run_buf_end(cp, &tmp, &sta, &state);
 		else
 		{
 			state = 0;
-			_check(buf, fnm, &state);
+			_check(cp.buf, cp.fnm, &state);
 		}
 	}
-	free(buf);
+	if (tmp != NULL)
+		free(tmp);
+	free(cp.buf);
 	return (0);
 
 }
-

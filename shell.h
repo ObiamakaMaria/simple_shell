@@ -26,6 +26,24 @@
 #ifndef O_RDONLY
 #define O_RDONLY 0
 #endif
+/**
+ * concatenate_pair - struct that holds buf and concatenated string \\
+ to contiue reading inputing if the shell is in a reading state ">"\\
+ and concatenate the new input with the previous input before the \\
+ string enter the continous reading state when it encouters any of \\
+ this characters: "&&, ||, |" at the end of the input
+ * @buf: the first user input before entering the reading state\\
+ * @second_string: the concatenated string from tokenization of the\\
+ first input when the shell encouter "&&, ||, |" at ehe end of the\\
+ input, to be concatenated to the new input which is buf in main.c
+ * @fnm: the executable file name
+ */
+typedef struct
+{
+	char *buf;
+	char *second_string;
+	char *fnm;
+} concatenate_pair;
 /*temporary execute func */
 void execute_command(char **tkn, char *command, char *fnm, char *det);
 void _check(char *command, char *fnm, int *ptr);
@@ -56,6 +74,7 @@ void *_memcpy(void *dest, const void *src, size_t n);
 int _white(const char *str);
 int _strcmp(const char *s1, char *s2);
 int has_consecutive(const char *str, char c);
+void append_to_beginning(char *str1, char *str2);
 char *_strtok(char *str, const char *delimiter);
 char *_strchr(const char *s, char c);
 void int_to_string(int num, char *buffer);
@@ -89,7 +108,7 @@ int separator_error(const char *fnm, int mm, const char *path);
 void logical_and(char *command, char *fnm, int *ptr);
 void not_j(char *command, char *fnm, int *ptr);
 int buf_end(char *command);
-void run_buf_end(char *command, char *fnm, int *sta, int *state);
+void run_buf_end(concatenate_pair cp, char **tmp, int *sta, int *state);
 /*env builtins */
 int _env(void);
 int _setenv(char **args, char *fnm);
