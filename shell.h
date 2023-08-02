@@ -46,7 +46,7 @@ typedef struct
 } concatenate_pair;
 /*temporary execute func */
 void execute_command(char **tkn, char *command, char *fnm, char *det);
-void _check(char *command, char *fnm, int *ptr);
+int _check(char *command, char *fnm, int *ptr);
 
 
 void handle_sigint(int signum);
@@ -61,7 +61,7 @@ void handle_pipe(char *input, char *fnm);
 void free_func(char **token);
 
 /* shell with path environment*/
-void shell_with_path(char **argg, char *path, char *fnm);
+int shell_with_path(char **argg, char *path, char *fnm);
 
 /* String Methods */
 char *_strcpy(char *dest, const  char *src);
@@ -77,6 +77,10 @@ int has_consecutive(const char *str, char c);
 void append_to_beginning(char *str1, char *str2);
 char *_strtok(char *str, const char *delimiter);
 char *_strchr(const char *s, char c);
+char **double_pipe(const char *input);
+int count_tokens(const char *input, const char *delimiter);
+void extract_tokens(char **tokens, const char *input, const char *d);
+int contains_exit(const char *input, char *exit_str);
 void int_to_string(int num, char *buffer);
 int get_int_length(int num);
 int write_error_message(const char *fnm, int mm, const char *path);
@@ -105,9 +109,9 @@ char *get_env(const char *key);
 char *_strdup(const char *str);
 int is_executable(const char *path);
 int separator_error(const char *fnm, int mm, const char *path);
-void logical_and(char *command, char *fnm, int *ptr);
-void not_j(char *command, char *fnm, int *ptr);
-int buf_end(char *command);
+void logical_and(char *command, char *fnm, int *ptr, char c);
+void not_j(char *command, char *fnm, int *ptr, char c);
+int buf_end(char *command, char c);
 void run_buf_end(concatenate_pair cp, char **tmp, int *sta, int *state);
 /*env builtins */
 int _env(void);

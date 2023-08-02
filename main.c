@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 			free(tmp);
 			tmp = NULL;
 		}
-		if (buf_end(cp.buf))
+		if (buf_end(cp.buf, '&') || buf_end(cp.buf, '|'))
 		run_buf_end(cp, &tmp, &sta, &state);
 		else
 		{

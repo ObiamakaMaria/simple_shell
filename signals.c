@@ -1,6 +1,5 @@
 #include "shell.h"
 
-char *tp(char **cmd);
 /**
  * handle_sigint - function that register signals
  * @signum: the signal number

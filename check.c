@@ -4,10 +4,9 @@
  * @command: the user input
  * @fnm: the name of the executable file
  * @ptr: to check if to print the prompt again
- * return: return void
+ * Return: 0 on succes, 1 on argument failure
  */
-
-void _check(char *command, char *fnm, int *ptr)
+int _check(char *command, char *fnm, int *ptr)
 {
 	char **tkn = NULL;
 	char *path = NULL;
@@ -15,16 +14,15 @@ void _check(char *command, char *fnm, int *ptr)
 
 	*ptr = 0;
 	count_quotes(command);
-	if (_strncmp(command, "exit", 4) == 0)
+	if (contains_exit(command, "exit"))
 	{
 		tell = 1;
-		if (command[4] == ' ' || command[4] == '\0')
-			builtins(command, fnm);
+		builtins(command, fnm);
 	}
 	if (shell_env(command, fnm, ptr) == 1)
 		tell = 1;
 
-	if (_contains_pipe(command) == 1)
+	if (_contains_pipe(command) == 1 && strstr(command, "||") == NULL)
 	{
 		tell = 1;
 		handle_pipe(command, fnm);
@@ -36,14 +34,27 @@ void _check(char *command, char *fnm, int *ptr)
 		if (path == NULL)
 		{
 			path = _strdup(tkn[0]);
-			execute_command(tkn, path, fnm, "fork");
+			if (shell_with_path(tkn, path, fnm))
+			{
+				free(path);
+				free_func(tkn);
+				return (1);
+			}
 		}
 
 		else
-			execute_command(tkn, path, fnm, "fork");
+		{
+			if (shell_with_path(tkn, path, fnm))
+			{
+				free(path);
+				free_func(tkn);
+				return (1);
+			}
+		}
 		free(path);
 		free_func(tkn);
 	}
+	return (0);
 }
 /**
  * shell_env - functino that run builtin commands
@@ -56,33 +67,24 @@ int shell_env(char *command, char *fnm, int *ptr)
 {
 	char **tkn = NULL;
 
-	if (_strncmp(command, "setenv", 6) == 0)
+	if (contains_exit(command, "setenv"))
 	{
-		if (command[6] == ' ' || command[6] == '\0')
-		{
-			tkn = tokenie(command, " ");
-			_setenv(tkn, fnm);
-			free_func(tkn);
-			return (1);
-		}
+		tkn = tokenie(command, " ");
+		_setenv(tkn, fnm);
+		free_func(tkn);
+		return (1);
 	}
-	if (_strncmp(command, "unsetenv", 8) == 0)
+	if (contains_exit(command, "unsetenv"))
 	{
-		if (command[8] == ' ' || command[8] == '\0')
-		{
-			tkn = tokenie(command, " ");
-			_unsetenv(tkn);
-			free_func(tkn);
-			return (1);
-		}
+		tkn = tokenie(command, " ");
+		_unsetenv(tkn);
+		free_func(tkn);
+		return (1);
 	}
-	if (_strncmp(command, "env", 3) == 0)
+	if (contains_exit(command, "env"))
 	{
-		if (command[3] == ' ' || command[3] == '\0')
-		{
-			_env();
-			return (1);
-		}
+		_env();
+		return (1);
 	}
 	if (_strchr(command, ';') != NULL)
 	{
@@ -94,7 +96,14 @@ int shell_env(char *command, char *fnm, int *ptr)
 	if (_strchr(command, '&') != NULL)
 	{
 
-		logical_and(command, fnm, ptr);
+		logical_and(command, fnm, ptr, '&');
+		return (1);
+
+	}
+	if (strstr(command, "||") != NULL)
+	{
+
+		logical_and(command, fnm, ptr, '|');
 		return (1);
 
 	}
@@ -162,32 +171,43 @@ void _separator(char *command, char *fnm, int *ptr)
  * @command: user input
  * Return: void
  */
-void logical_and(char *command, char *fnm, int *ptr)
+void logical_and(char *command, char *fnm, int *ptr, char c)
 {
 	int j = 0, k = 0, l = 0;
 	static int mm = 1;
 	int lg_i;
 
-	lg_i = logical_b(command, '&');
+	lg_i = logical_b(command, c);
 
 	if (lg_i != -1)
 	{
 		j = 1;
-		if (command[lg_i] == '&' && command[lg_i + 1] == '&')
+		if (command[lg_i] == c && command[lg_i + 1] == c)
 			k = 1;
-		if (command[lg_i] == '&' && command[lg_i + 1] != '&')
+		if (command[lg_i] == c && command[lg_i + 1] != c)
 			l = 1;
 	}
 	if (j)
 	{
 		if (k)
-			separator_error(fnm, mm, "\"&&\"");
+		{
+			if (c == '&')
+				separator_error(fnm, mm, "\"&&\"");
+			else
+				separator_error(fnm, mm, "\"||\"");
+		}
 		else if (l)
-			separator_error(fnm, mm, "\"&\"");
+		{
+			if (c == '&')
+				separator_error(fnm, mm, "\"&\"");
+			else
+				separator_error(fnm, mm, "\"|\"");
+		}
+
 	}
 	if (!j)
 	{
-		not_j(command, fnm, ptr);
+		not_j(command, fnm, ptr, c);
 	}
 }
 /**
@@ -197,29 +217,45 @@ void logical_and(char *command, char *fnm, int *ptr)
  * @ptr: check the _check function for description
  * Return: void
  */
-void not_j(char *command, char *fnm, int *ptr)
+void not_j(char *command, char *fnm, int *ptr, char c)
 {
 	char **tkn = NULL, *ret = remove_w(command);
-	int len = _strlen(ret), i = 0;
+	int len = _strlen(ret), i = 0, k = 0;
 
 	len--;
-	tkn = tokenie(command, "&");
+	if (c == '&')
+		tkn = tokenie(command, "&");
+	else
+		tkn = double_pipe(command);
 	if (tkn != NULL)
 	{
 		while (tkn[i] != NULL)
 		{
+
 			if (ret != NULL)
 			{
 				if (ret[len] == '&' && ret[len - 1] != '&')
 				{
 					_check(tkn[i], fnm, ptr);
 					*ptr = 1;
-					break;
+					k = 1;
 				}
 
 			}
+			if (!k)
+			{
+				if (c == '|')
+				{
+					if (!_check(tkn[i], fnm, ptr))
+						break;
+				}
+				else
+				{
+					if (_check(tkn[i], fnm, ptr))
+						break;
+				}
 
-			_check(tkn[i], fnm, ptr);
+			}
 			i++;
 		}
 

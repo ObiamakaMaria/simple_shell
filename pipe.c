@@ -29,14 +29,13 @@ void handle_pipe(char *input, char *fnm)
 			tkk = tokenie(commands[i], " ");
 			patt = path_handler(tkk[0]);
 			if (patt != NULL)
-				execute_command(tkk, patt, fnm, "nofork");
+				simple_shell(tkk, patt, fnm);
 			if (patt == NULL)
 			{
 				patt = _strdup(tkk[0]);
-				execute_command(tkk, patt, fnm, "nofork");
+				simple_shell(tkk, patt, fnm);
 			}
-			free_func(commands);
-			exit(1);
+			printf("%s\n", commands[i]);
 		}
 		else
 		{ /* Parent process */

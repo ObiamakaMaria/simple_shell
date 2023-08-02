@@ -6,12 +6,12 @@ char *concatenate(char **arr, size_t size);
  * Return: 0 on nothing, 1 on finding double of the character\\
  at the end of the input, 2 on finding three of the character consecutively
  */
-int buf_end(char *command)
+int buf_end(char *command, char c)
 {
 	char *r = NULL;
 	int l;
 
-	if (command[0] == '&')
+	if (command[0] == c)
 		return (0);
 	r = remove_w(command);
 	l = _strlen(r);
@@ -20,12 +20,12 @@ int buf_end(char *command)
 
 	if (r != NULL)
 	{
-		if (has_consecutive(r, '&'))
+		if (has_consecutive(r, c))
 		{
 			free(r);
 			return (2);
 		}
-		if (r[l] == '&' && r[l - 1] == '&')
+		if (r[l] == c && r[l - 1] == c)
 		{
 			free(r);
 			return (1);
@@ -49,18 +49,21 @@ void run_buf_end(concatenate_pair cp, char **tmp, int *sta, int *state)
 
 
 
-	if (buf_end(cp.buf) == 2)
+	if (buf_end(cp.buf, '&') == 2)
 		separator_error(cp.fnm, i, "\"&&\"");
+	else if (buf_end(cp.buf, '|') == 2)
+		separator_error(cp.fnm, i, "\"||\"");
 	else
 	{
 		if (*tmp != NULL)
-		free(*tmp);
+			free(*tmp);
 		*tmp = _strdup(cp.buf);
 
 		*sta = 1;
 		*state = 1;
 
 	}
+
 }
 /**
  * append_to_beginning - function that  append one string to \\
@@ -78,14 +81,41 @@ void append_to_beginning(char *str1, char *str2)
 	if (str1 != NULL && str2 != NULL)
 	{
 
-	str1_len = strlen(str1);
-	str2_len = strlen(str2);
+		str1_len = strlen(str1);
+		str2_len = strlen(str2);
 
-	for (i = str1_len + 1; i > 0; i--)
-		str1[i + str2_len - 1] = str1[i - 1];
+		for (i = str1_len + 1; i > 0; i--)
+			str1[i + str2_len - 1] = str1[i - 1];
 
-	for (i = 0; i < str2_len; i++)
-		str1[i] = str2[i];
+		for (i = 0; i < str2_len; i++)
+			str1[i] = str2[i];
 	}
 }
+/**
+ * contains_exit - function that check if a string is found\\
+ at the beginning of a string
+ * @input: the string which we want to check
+ * @exit_str: the string to search for
+ * Return: 1 on found, 0 on not found
+ */
+int contains_exit(const char *input, char *exit_str)
+{
+	while (*input == ' ' || *input == '\t')
+		input++;
+	while (*exit_str != '\0')
+	{
+		if (*input != *exit_str)
+			return (0);
+		input++;
+		exit_str++;
+	}
 
+	while (*input != '\0')
+	{
+		if (*input != ' ' && *input != '\t')
+			return (0);
+		input++;
+	}
+
+	return (1);
+}

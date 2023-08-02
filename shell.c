@@ -6,12 +6,12 @@
  * @argg: the arrays of commands and arguments
  * @path: the absolute path of a short command
  * @fnm: the  name of the executable file for the shell
- * return: void
+ * Return: 0 on succes, 1 on failure of argument for command
  */
-void shell_with_path(char **argg, char *path, char *fnm)
+int shell_with_path(char **argg, char *path, char *fnm)
 {
 	pid_t pid;
-	int status;
+	int status, exit_status;
 	static int mm = 1;
 
 	if (is_file_exists(path) || !is_executable(path))
@@ -23,6 +23,7 @@ void shell_with_path(char **argg, char *path, char *fnm)
 			exit(0);
 		}
 		mm++;
+		return (1);
 	}
 	else if (is_executable(path))
 	{
@@ -35,21 +36,21 @@ void shell_with_path(char **argg, char *path, char *fnm)
 		else if (pid == 0)
 		{
 			if (execve(path, argg, environ) == -1)
-			{
-				free(path);
-				free_func(argg);
-				perror(fnm);
-				exit(2);
-			}
+				exit(0);
 		}
 		else
 		{
-			do
-				waitpid(pid, &status, WUNTRACED);
-			while	(!WIFEXITED(status) && !WIFSIGNALED(status));
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			exit_status = WEXITSTATUS(status);
+			if (exit_status != 0)
+				return (1);
+		}
 		}
 
 	}
+	return (0);
 }
 
 /**
@@ -79,26 +80,6 @@ void simple_shell(char **argg, char *path, char *fnm)
 			exit(2);
 		}
 	}
-}
-
-/**
- * execute_command - function that call simple_shell or shell_with_path
- * @tkn: pointer to an array of strings for file execution
- * @command: the comand to execute
- * @fnm: the shell executable name
- * @det: it is the determinant whether to call fork or not
- * return: void
- */
-void execute_command(char **tkn, char *command, char *fnm, char *det)
-{
-
-
-	if (strcmp(det, "nofork") == 0)
-	{
-		simple_shell(tkn, command, fnm);
-	}
-	else if (strcmp(det, "fork") == 0)
-		shell_with_path(tkn, command, fnm);
 }
 /**
  * is_executable - funct to check if command is executable
