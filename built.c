@@ -34,7 +34,7 @@ void builtins(char *command, char *fnm)
 				write(STDOUT_FILENO, token, _strlen(token));
 				write(STDOUT_FILENO, "\n", 2);
 				free(command);
-				exit_code(1);
+				exit_code(2);
 			}
 			else
 			{

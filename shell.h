@@ -121,4 +121,6 @@ int _unsetenv(char **args);
 int shell_env(char *command, char *fnm, int *ptr);
 int shell_cd(char **args, char *fnm);
 void _separator(char *command, char *fnm, int *ptr);
+/* comment function */
+void _comment(char *command, char *fnm);
 #endif

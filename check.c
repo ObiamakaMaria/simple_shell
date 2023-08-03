@@ -107,6 +107,11 @@ int shell_env(char *command, char *fnm, int *ptr)
 		return (1);
 
 	}
+	if (_strstr(command, "#") != NULL)
+	{
+		_comment(command, fnm);
+		return (1);
+	}
 	return (0);
 }
 /**
