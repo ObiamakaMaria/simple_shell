@@ -30,7 +30,9 @@ void builtins(char *command, char *fnm)
 			status = strtol(token, &end_ptr, 10);
 			if (*end_ptr != '\0' || end_ptr == token)
 			{
-				write(2, "./hsh: 1: exit: Illegal number: HBTN", 37);
+				write(STDOUT_FILENO, "exit status not a number: ", 27);
+				write(STDOUT_FILENO, token, _strlen(token));
+				write(STDOUT_FILENO, "\n", 2);
 				free(command);
 				exit_code(1);
 			}
