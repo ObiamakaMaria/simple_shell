@@ -37,7 +37,6 @@ int shell_with_path(char **argg, char *path, char *fnm)
 		{
 			if (execve(path, argg, environ) == -1)
 				exit(0);
-			exit(0);
 		}
 		else
 		{
@@ -46,7 +45,6 @@ int shell_with_path(char **argg, char *path, char *fnm)
 		{
 			exit_status = WEXITSTATUS(status);
 			if (exit_status != 0)
-				exit(2);
 				return (1);
 		}
 		}
