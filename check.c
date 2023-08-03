@@ -247,7 +247,7 @@ void not_j(char *command, char *fnm, int *ptr, char c)
 				if (c == '|')
 				{
 					if (!_check(tkn[i], fnm, ptr))
-						break;
+						exit(2);
 				}
 				else
 				{
