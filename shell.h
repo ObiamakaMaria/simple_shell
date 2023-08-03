@@ -77,6 +77,7 @@ int has_consecutive(const char *str, char c);
 void append_to_beginning(char *str1, char *str2);
 char *_strtok(char *str, const char *delimiter);
 char *_strchr(const char *s, char c);
+char *_strstr(const char *haystack, const char *needle);
 char **double_pipe(const char *input);
 int count_tokens(const char *input, const char *delimiter);
 void extract_tokens(char **tokens, const char *input, const char *d);

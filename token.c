@@ -79,7 +79,7 @@ int count_tokens(const char *input, const char *delimiter)
 
 	while (1)
 	{
-		token = strstr(ptr, delimiter);
+		token = _strstr(ptr, delimiter);
 		if (token == NULL)
 		{
 			count++;
@@ -116,7 +116,7 @@ void extract_tokens(char **tokens, const char *input, const char *d)
 
 	while (1)
 	{
-		token = strstr(ptr, d);
+		token = _strstr(ptr, d);
 		if (token == NULL)
 		{
 			tokens[index] = _strdup(ptr);

@@ -35,7 +35,7 @@ void handle_pipe(char *input, char *fnm)
 				patt = _strdup(tkk[0]);
 				simple_shell(tkk, patt, fnm);
 			}
-			printf("%s\n", commands[i]);
+			exit(127);
 		}
 		else
 		{ /* Parent process */

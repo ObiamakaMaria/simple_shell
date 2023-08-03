@@ -22,7 +22,7 @@ int _check(char *command, char *fnm, int *ptr)
 	if (shell_env(command, fnm, ptr) == 1)
 		tell = 1;
 
-	if (_contains_pipe(command) == 1 && strstr(command, "||") == NULL)
+	if (_contains_pipe(command) == 1 && _strstr(command, "||") == NULL)
 	{
 		tell = 1;
 		handle_pipe(command, fnm);
@@ -100,7 +100,7 @@ int shell_env(char *command, char *fnm, int *ptr)
 		return (1);
 
 	}
-	if (strstr(command, "||") != NULL)
+	if (_strstr(command, "||") != NULL)
 	{
 
 		logical_and(command, fnm, ptr, '|');
