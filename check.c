@@ -220,8 +220,7 @@ void logical_and(char *command, char *fnm, int *ptr, char c)
 void not_j(char *command, char *fnm, int *ptr, char c)
 {
 	char **tkn = NULL, *ret = remove_w(command);
-	int len = _strlen(ret), i = 0, k = 0, status;
-	pid_t pid;
+	int len = _strlen(ret), i = 0, k = 0;
 
 	len--;
 	if (c == '&')
@@ -231,9 +230,6 @@ void not_j(char *command, char *fnm, int *ptr, char c)
 	if (tkn != NULL)
 	{
 		while (tkn[i] != NULL)
-		{
-		pid = fork();
-		if (pid == 0)
 		{
 
 			if (ret != NULL)
@@ -251,25 +247,15 @@ void not_j(char *command, char *fnm, int *ptr, char c)
 				if (c == '|')
 				{
 					if (!_check(tkn[i], fnm, ptr))
-					{
 						break;
-						exit(0);
-					}
 				}
 				else
 				{
 					if (_check(tkn[i], fnm, ptr))
-					{
 						break;
-						exit(2);
-					}
 				}
 
 			}
-			exit(0);
-		}
-		else
-			waitpid(pid, &status, 0);
 			i++;
 		}
 
