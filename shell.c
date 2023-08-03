@@ -13,44 +13,43 @@ int shell_with_path(char **argg, char *path, char *fnm)
 	pid_t pid;
 	int status, exit_status;
 	static int mm = 1;
-	pid = fork();
+
+	if (is_file_exists(path) || !is_executable(path))
+	{
+		if (write_error_message(fnm, mm, path) == -1)
+		{
+			free(path);
+			free_func(argg);
+			exit(0);
+		}
+		mm++;
+		return (1);
+	}
+	else if (is_executable(path))
+	{
+		pid = fork();
 		if (pid == -1)
 		{
 			perror("failed to fork");
-			exit(2);
+			exit(1);
 		}
 		else if (pid == 0)
 		{
-			if (is_file_exists(path) || !is_executable(path))
-			{
-				if (write_error_message(fnm, mm, path) == -1)
-				{
-					free(path);
-					free_func(argg);
-					exit(0);
-				}
-				mm++;
-				exit(127);
-				return (1);
-			}
-			else if (is_executable(path))
-			{
-				if (execve(path, argg, environ) == -1)
-					exit(2);
+			if (execve(path, argg, environ) == -1)
 				exit(0);
-			}
 		}
 		else
 		{
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status))
-			{
-				exit_status = WEXITSTATUS(status);
-				if (exit_status != 0)
-					exit(2);
-					return (1);
-			}
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			exit_status = WEXITSTATUS(status);
+			if (exit_status != 0)
+				return (1);
 		}
+		}
+
+	}
 	return (0);
 }
 
