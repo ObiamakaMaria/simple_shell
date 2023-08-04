@@ -3,6 +3,7 @@ char *concatenate(char **arr, size_t size);
 /**
  * buf_end - funciton that checks for repition of character
  * @command: the user input
+ * @c: the character to check for
  * Return: 0 on nothing, 1 on finding double of the character\\
  at the end of the input, 2 on finding three of the character consecutively
  */

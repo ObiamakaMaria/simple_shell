@@ -48,7 +48,6 @@ int shell_with_path(char **argg, char *path, char *fnm)
 				return (1);
 		}
 		}
-
 	}
 	return (0);
 }

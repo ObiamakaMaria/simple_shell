@@ -8,8 +8,6 @@
  */
 int _check(char *command, char *fnm, int *ptr)
 {
-	char **tkn = NULL;
-	char *path = NULL;
 	int tell = 0;
 
 	*ptr = 0;
@@ -29,30 +27,8 @@ int _check(char *command, char *fnm, int *ptr)
 	}
 	if (tell == 0)
 	{
-		tkn = tokenie(command, " ");
-		path = path_handler(tkn[0]);
-		if (path == NULL)
-		{
-			path = _strdup(tkn[0]);
-			if (shell_with_path(tkn, path, fnm))
-			{
-				free(path);
-				free_func(tkn);
-				return (1);
-			}
-		}
-
-		else
-		{
-			if (shell_with_path(tkn, path, fnm))
-			{
-				free(path);
-				free_func(tkn);
-				return (1);
-			}
-		}
-		free(path);
-		free_func(tkn);
+		if (_execution_to_shell(command, fnm))
+			return (1);
 	}
 	return (0);
 }
@@ -65,27 +41,9 @@ int _check(char *command, char *fnm, int *ptr)
  */
 int shell_env(char *command, char *fnm, int *ptr)
 {
-	char **tkn = NULL;
 
-	if (contains_exit(command, "setenv"))
-	{
-		tkn = tokenie(command, " ");
-		_setenv(tkn, fnm);
-		free_func(tkn);
+	if (_environs(command, fnm))
 		return (1);
-	}
-	if (contains_exit(command, "unsetenv"))
-	{
-		tkn = tokenie(command, " ");
-		_unsetenv(tkn);
-		free_func(tkn);
-		return (1);
-	}
-	if (contains_exit(command, "env"))
-	{
-		_env();
-		return (1);
-	}
 	if (_strchr(command, ';') != NULL)
 	{
 
@@ -123,10 +81,8 @@ int shell_env(char *command, char *fnm, int *ptr)
  */
 void _separator(char *command, char *fnm, int *ptr)
 {
-	int i = 0, j = 0;
-	static int mm = 1;
+	int j = 0;
 	char *ret = NULL;
-	char **tkn = NULL;
 
 	if (has_c(command, ';') == 1)
 		j = 1;
@@ -143,36 +99,13 @@ void _separator(char *command, char *fnm, int *ptr)
 		}
 		free(ret);
 	}
-
-	if (j)
-	{
-		if (contains_m(command))
-			separator_error(fnm, mm, "\";;\"");
-		else
-			separator_error(fnm, mm, "\";\"");
-	}
-	else if (!j)
-	{
-		tkn = tokenie(command, ";");
-		if (tkn != NULL)
-		{
-			while (tkn[i] != NULL)
-			{
-				_check(tkn[i], fnm, ptr);
-				i++;
-			}
-
-		}
-		free_func(tkn);
-	}
-
-
-
+	separator_2(command, fnm, ptr, j);
 }
 /**
  * logical_and - the function that runs command separator
  * @fnm: the executable file name
  * @ptr: check _check function for description of this argument
+ * @c: the character wheter '&' or '|'
  * @command: user input
  * Return: void
  */
@@ -220,6 +153,7 @@ void logical_and(char *command, char *fnm, int *ptr, char c)
  * @fnm: the name of the executable file
  * @command: user input
  * @ptr: check the _check function for description
+ * @c: the delimeter
  * Return: void
  */
 void not_j(char *command, char *fnm, int *ptr, char c)
@@ -236,16 +170,13 @@ void not_j(char *command, char *fnm, int *ptr, char c)
 	{
 		while (tkn[i] != NULL)
 		{
-
 			if (ret != NULL)
 			{
 				if (ret[len] == '&' && ret[len - 1] != '&')
 				{
 					_check(tkn[i], fnm, ptr);
-					*ptr = 1;
-					k = 1;
+					*ptr = 1, k = 1;
 				}
-
 			}
 			if (!k)
 			{
@@ -259,11 +190,9 @@ void not_j(char *command, char *fnm, int *ptr, char c)
 					if (_check(tkn[i], fnm, ptr))
 						break;
 				}
-
 			}
 			i++;
 		}
-
 	}
 	if (ret != NULL)
 		free(ret);
