@@ -124,7 +124,7 @@ int shell_cd(char **args, char *fnm);
 void _separator(char *command, char *fnm, int *ptr);
 void separator_2(char *command, char *fnm, int *ptr, int j);
 int _execution_to_shell(char *command, char *fnm);
-void extra_main(concatenate_pair cp, char *tmp, int sta, int state);
+void extra_main(concatenate_pair cp, char **tmp, int *sta, int *state);
 /* comment function */
 void _comment(char *command, char *fnm);
 #endif

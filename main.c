@@ -42,23 +42,10 @@ int main(int argc, char **argv)
 			state = 0;
 			continue;
 		}
-		if (tmp != NULL)
-		{
-			append_to_beginning(cp.buf, tmp);
-			free(tmp);
-			tmp = NULL;
-		}
-		if (buf_end(cp.buf, '&') || buf_end(cp.buf, '|'))
-		run_buf_end(cp, &tmp, &sta, &state);
-		else
-		{
-			state = 0;
-			_check(cp.buf, cp.fnm, &state);
-		}
+		extra_main(cp, &tmp, &sta, &state);
 	}
 	if (tmp != NULL)
 		free(tmp);
 	free(cp.buf);
 	return (0);
-
 }

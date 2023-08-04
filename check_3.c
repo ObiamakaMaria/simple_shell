@@ -112,19 +112,19 @@ int _execution_to_shell(char *command, char *fnm)
  * @state: second of the state to the above
  * Return: void
  */
-void extra_main(concatenate_pair cp, char *tmp, int sta, int state)
+void extra_main(concatenate_pair cp, char **tmp, int *sta, int *state)
 {
-	if (tmp != NULL)
+	if (*tmp != NULL)
 	{
-		append_to_beginning(cp.buf, tmp);
-		free(tmp);
-		tmp = NULL;
+		append_to_beginning(cp.buf, *tmp);
+		free(*tmp);
+		*tmp = NULL;
 	}
 	if (buf_end(cp.buf, '&') || buf_end(cp.buf, '|'))
-		run_buf_end(cp, &tmp, &sta, &state);
+		run_buf_end(cp, tmp, sta, state);
 	else
 	{
-		state = 0;
-		_check(cp.buf, cp.fnm, &state);
+		*state = 0;
+		_check(cp.buf, cp.fnm, state);
 	}
 }
