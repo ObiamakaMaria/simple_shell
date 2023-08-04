@@ -27,21 +27,17 @@
 #define O_RDONLY 0
 #endif
 /**
- * concatenate_pair - struct that holds buf and concatenated string \\
+ * struct concatenate_pair - struct that holds buf concatenation\\
  to contiue reading inputing if the shell is in a reading state ">"\\
  and concatenate the new input with the previous input before the \\
  string enter the continous reading state when it encouters any of \\
  this characters: "&&, ||, |" at the end of the input
- * @buf: the first user input before entering the reading state\\
- * @second_string: the concatenated string from tokenization of the\\
- first input when the shell encouter "&&, ||, |" at ehe end of the\\
- input, to be concatenated to the new input which is buf in main.c
+ * @buf: the first user input before entering the reading state
  * @fnm: the executable file name
  */
-typedef struct
+typedef struct concatenate_pair
 {
 	char *buf;
-	char *second_string;
 	char *fnm;
 } concatenate_pair;
 /*temporary execute func */
